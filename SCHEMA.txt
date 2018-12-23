@@ -1,0 +1,145 @@
+CREATE TABLE PACIENTI
+(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    id_camera INT,
+    nume VARCHAR(255) NOT NULL,
+    data_internare DATETIME NOT NULL,
+    sex TINYINT DEFAULT 2 NOT NULL
+);
+create table CAMERE
+(
+	id int auto_increment primary key,
+	id_complex int null,
+	nr_paturi int default '2' not null
+);
+CREATE TABLE COMPLEXURI
+(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nume VARCHAR(255) NOT NULL,
+    adresa VARCHAR(255) NOT NULL
+);
+CREATE TABLE EXAMINARI
+(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    id_pacient INT NOT NULL,
+    data DATETIME NOT NULL
+);
+CREATE TABLE REZULTATE
+(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    id_examinare INT NOT NULL,
+    tip TINYINT DEFAULT 0 NOT NULL
+);
+CREATE TABLE MEDICI
+(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    id_rezultat INT NOT NULL,
+    nume VARCHAR(255) NOT NULL,
+    specializare VARCHAR(255) NOT NULL
+);
+CREATE TABLE TRATAMENTE
+(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    id_medic INT NOT NULL,
+    denumire VARCHAR(255) NOT NULL,
+    comentarii TEXT,
+    data_inceput DATETIME NOT NULL,
+    data_sfarsit DATETIME NOT NULL
+);
+CREATE TABLE MEDICAMENTE
+(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    id_tratament INT NOT NULL,
+    denumire VARCHAR(255) NOT NULL,
+    cantitate INT NOT NULL,
+    gramaj DECIMAL(3,1) NOT NULL
+);
+create table drop_table
+(
+	id int null
+);
+
+ALTER TABLE PACIENTI
+ADD CONSTRAINT PACIENTI_CAMERE_id_fk
+FOREIGN KEY (id_camera) REFERENCES CAMERE (id);
+
+ALTER TABLE CAMERE
+ADD CONSTRAINT CAMERE_COMPLEXURI_id_fk
+FOREIGN KEY (id_complex) REFERENCES COMPLEXURI (id);
+
+ALTER TABLE EXAMINARI
+ADD CONSTRAINT EXAMINARI_PACIENTI_id_fk
+FOREIGN KEY (id_pacient) REFERENCES PACIENTI (id);
+
+ALTER TABLE REZULTATE
+ADD CONSTRAINT REZULTATE_EXAMINARI_id_fk
+FOREIGN KEY (id_examinare) REFERENCES EXAMINARI (id);
+
+ALTER TABLE MEDICI
+ADD CONSTRAINT MEDICI_REZULTATE_id_fk
+FOREIGN KEY (id_rezultat) REFERENCES REZULTATE (id);
+
+ALTER TABLE TRATAMENTE
+ADD CONSTRAINT TRATAMENTE_MEDICI_id_fk
+FOREIGN KEY (id_medic) REFERENCES MEDICI (id);
+
+ALTER TABLE MEDICAMENTE
+ADD CONSTRAINT MEDICAMENTE_TRATAMENTE_id_fk
+FOREIGN KEY (id_tratament) REFERENCES TRATAMENTE (id);
+
+
+ALTER TABLE MEDICAMENTE MODIFY gramaj DECIMAL(3,1);
+
+INSERT INTO proiect.COMPLEXURI (nume, adresa) VALUES ('Spitalu 9', 'Pacii 2');
+INSERT INTO proiect.COMPLEXURI (nume, adresa) VALUES ('Magheru ', 'Magheru 15');
+INSERT INTO proiect.COMPLEXURI (nume, adresa) VALUES ('Ungheru', 'Ungheru 22');
+INSERT INTO proiect.COMPLEXURI (nume, adresa) VALUES ('Grigore Alexandrescu', 'Splaiul 2');
+INSERT INTO proiect.COMPLEXURI (nume, adresa) VALUES ('Marie Curie', 'Berceni 222');
+
+INSERT INTO proiect.CAMERE (id_complex, nr_paturi) VALUES (1, 2);
+INSERT INTO proiect.CAMERE (id_complex, nr_paturi) VALUES (1, 2);
+INSERT INTO proiect.CAMERE (id_complex, nr_paturi) VALUES (1, 2);
+INSERT INTO proiect.CAMERE (id_complex, nr_paturi) VALUES (2, 2);
+INSERT INTO proiect.CAMERE (id_complex, nr_paturi) VALUES (2, 2);
+
+INSERT INTO proiect.PACIENTI (id_camera, nume, data_internare, sex) VALUES (1, 'George George', '2017-12-19 22:51:12', 1);
+INSERT INTO proiect.PACIENTI (id_camera, nume, data_internare, sex) VALUES (1, 'Marin Marin', '2017-12-18 22:57:00', 1);
+INSERT INTO proiect.PACIENTI (id_camera, nume, data_internare, sex) VALUES (2, 'Andrei Andrei', '2017-12-17 22:58:43', 1);
+INSERT INTO proiect.PACIENTI (id_camera, nume, data_internare, sex) VALUES (4, 'Maria Maria', '2017-12-16 23:02:33', 2);
+INSERT INTO proiect.PACIENTI (id_camera, nume, data_internare, sex) VALUES (4, 'Alina Alina', '2017-12-16 23:03:11', 2);
+
+INSERT INTO proiect.EXAMINARI (id_pacient, data) VALUES (1, '2017-12-19 22:51:12');
+INSERT INTO proiect.EXAMINARI (id_pacient, data) VALUES (2, '2017-12-18 22:57:02');
+INSERT INTO proiect.EXAMINARI (id_pacient, data) VALUES (3, '2017-12-17 22:58:43');
+INSERT INTO proiect.EXAMINARI (id_pacient, data) VALUES (4, '2017-12-16 23:02:33');
+INSERT INTO proiect.EXAMINARI (id_pacient, data) VALUES (5, '2017-12-16 23:03:11');
+
+INSERT INTO proiect.REZULTATE (id_examinare, tip) VALUES (1, 1);
+INSERT INTO proiect.REZULTATE (id_examinare, tip) VALUES (2, 1);
+INSERT INTO proiect.REZULTATE (id_examinare, tip) VALUES (3, 1);
+INSERT INTO proiect.REZULTATE (id_examinare, tip) VALUES (4, 1);
+INSERT INTO proiect.REZULTATE (id_examinare, tip) VALUES (5, 1);
+
+INSERT INTO proiect.MEDICI (id_rezultat, nume, specializare) VALUES (1, 'Doc Gigel', 'Incapatanare cronica');
+INSERT INTO proiect.MEDICI (id_rezultat, nume, specializare) VALUES (2, 'Doc Gigel', 'Incapatanare cronica');
+INSERT INTO proiect.MEDICI (id_rezultat, nume, specializare) VALUES (3, 'Doc Mirel', 'Incapatanare acuta');
+INSERT INTO proiect.MEDICI (id_rezultat, nume, specializare) VALUES (4, 'Doc Miner', 'Incapatanare avansata');
+INSERT INTO proiect.MEDICI (id_rezultat, nume, specializare) VALUES (5, 'Doc Miner', 'Incapatanare avansata');
+
+INSERT INTO proiect.TRATAMENTE (id_medic, denumire, comentarii, data_inceput, data_sfarsit) VALUES (1, 'Tratamentos icuos', null, '2017-12-24 00:42:35', '2017-12-28 00:42:43');
+INSERT INTO proiect.TRATAMENTE (id_medic, denumire, comentarii, data_inceput, data_sfarsit) VALUES (2, 'Tratamentos icuos', 'Se recomanda precautie in interactiunea cu pacientul', '2017-12-22 00:43:18', '2017-12-29 00:43:23');
+INSERT INTO proiect.TRATAMENTE (id_medic, denumire, comentarii, data_inceput, data_sfarsit) VALUES (3, 'Tratamentos duoduo', null, '2017-12-24 00:42:35', '2017-12-28 00:42:43');
+INSERT INTO proiect.TRATAMENTE (id_medic, denumire, comentarii, data_inceput, data_sfarsit) VALUES (4, 'Tratamentos triados', null, '2017-12-22 00:43:18', '2017-12-28 00:42:43');
+INSERT INTO proiect.TRATAMENTE (id_medic, denumire, comentarii, data_inceput, data_sfarsit) VALUES (5, 'Tratamentos triados', null, '2017-12-22 00:43:18', '2018-01-20 00:44:54');
+
+INSERT INTO proiect.MEDICAMENTE (id_tratament, denumire, cantitate, gramaj) VALUES (1, 'Medicamentos hapciu', 12, null);
+INSERT INTO proiect.MEDICAMENTE (id_tratament, denumire, cantitate, gramaj) VALUES (2, 'Medicamentos hapciu', 24, null);
+INSERT INTO proiect.MEDICAMENTE (id_tratament, denumire, cantitate, gramaj) VALUES (3, 'Medicamentos boom-boom', 1, 20.5);
+INSERT INTO proiect.MEDICAMENTE (id_tratament, denumire, cantitate, gramaj) VALUES (4, 'Medicamentos bumcha', 2, 4.0);
+INSERT INTO proiect.MEDICAMENTE (id_tratament, denumire, cantitate, gramaj) VALUES (5, 'Medicamentos bumcha', 4, 8.0);
+
+update MEDICI set specializare = "Incapanare Cronica" where nume = "Doc Gigel"
+update PACIENTI set nume = "Maryn Maryn" where nume = "Marin Marin"
+update CAMERE set nr_paturi = 4 where id_complex = 2
+update COMPLEXURI set adresa = concat('Str. ', adresa)
+update MEDICAMENTE set denumire = replace(denumire, 'mentos', 'MENTOS')
